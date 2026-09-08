@@ -1,0 +1,384 @@
+{% extends "base.html" %}
+
+{% block title %}
+Data Perangkat - Inventaris IT
+{% endblock %}
+
+
+{% block content %}
+
+<!-- HEADER -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="mb-1">
+            Data Perangkat
+        </h2>
+
+        <p class="text-muted mb-0">
+            Daftar seluruh perangkat IT
+        </p>
+    </div>
+
+    <div class="d-flex gap-2">
+
+        <a
+            href="/perangkat/tambah"
+            class="btn btn-primary"
+        >
+            + Tambah Perangkat
+        </a>
+
+        <a
+            href="/perangkat/cetak"
+            target="_blank"
+            class="btn btn-success"
+        >
+            🖨 Cetak
+        </a>
+
+        <a
+            href="/perangkat/export"
+            class="btn btn-success"
+        >
+            📊 Excel
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- PENCARIAN -->
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-body">
+
+        <form
+            method="GET"
+            action="/perangkat"
+            class="row g-2"
+        >
+
+            <!-- SEARCH -->
+
+            <div class="col-md-5">
+
+                <label class="form-label">
+                    Cari Perangkat
+                </label>
+
+                <input
+                    type="text"
+                    name="keyword"
+                    class="form-control"
+                    placeholder="Kode, nama, merek, atau lokasi..."
+                    value="{{ keyword }}"
+                >
+
+            </div>
+
+
+            <!-- KONDISI -->
+
+            <div class="col-md-3">
+
+                <label class="form-label">
+                    Kondisi
+                </label>
+
+                <select
+                    name="kondisi"
+                    class="form-select"
+                >
+
+                    <option value="">
+                        Semua Kondisi
+                    </option>
+
+                    <option
+                        value="Baik"
+                        {% if kondisi == "Baik" %}selected{% endif %}
+                    >
+                        Baik
+                    </option>
+
+                    <option
+                        value="Dalam Perbaikan"
+                        {% if kondisi == "Dalam Perbaikan" %}selected{% endif %}
+                    >
+                        Dalam Perbaikan
+                    </option>
+
+                    <option
+                        value="Rusak"
+                        {% if kondisi == "Rusak" %}selected{% endif %}
+                    >
+                        Rusak
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- BUTTON CARI -->
+
+            <div class="col-md-2 d-flex align-items-end">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary w-100"
+                >
+                    Cari
+                </button>
+
+            </div>
+
+
+            <!-- RESET -->
+
+            <div class="col-md-2 d-flex align-items-end">
+
+                <a
+                    href="/perangkat"
+                    class="btn btn-secondary w-100"
+                >
+                    Reset
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- TABEL -->
+
+<div class="card shadow-sm">
+
+    <div class="card-header">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+                Daftar Perangkat
+            </h5>
+
+            <span class="text-muted">
+                Data Inventaris
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th class="text-center">
+                            No
+                        </th>
+
+                        <th>
+                            Kode Aset
+                        </th>
+
+                        <th>
+                            Nama Perangkat
+                        </th>
+
+                        <th>
+                            Kategori
+                        </th>
+
+                        <th>
+                            Merek
+                        </th>
+
+                        <th>
+                            Lokasi
+                        </th>
+
+                        <th class="text-center">
+                            Kondisi
+                        </th>
+
+                        <th>
+                            Tanggal Masuk
+                        </th>
+
+                        <th class="text-center">
+                            Aksi
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for perangkat in perangkat_list %}
+
+                    <tr>
+
+                        <td class="text-center">
+                            {{ loop.index }}
+                        </td>
+
+
+                        <td>
+                            <strong>
+                                {{ perangkat[1] }}
+                            </strong>
+                        </td>
+
+
+                        <td>
+                            {{ perangkat[2] }}
+                        </td>
+
+
+                        <td>
+                            {{ perangkat[3] }}
+                        </td>
+
+
+                        <td>
+                            {{ perangkat[4] or '-' }}
+                        </td>
+
+
+                        <td>
+                            {{ perangkat[5] or '-' }}
+                        </td>
+
+
+                        <td class="text-center">
+
+                            {% if perangkat[6] == "Baik" %}
+
+                                <span class="badge bg-success">
+                                    Baik
+                                </span>
+
+                            {% elif perangkat[6] == "Dalam Perbaikan" %}
+
+                                <span class="badge bg-warning text-dark">
+                                    Dalam Perbaikan
+                                </span>
+
+                            {% elif perangkat[6] == "Rusak" %}
+
+                                <span class="badge bg-danger">
+                                    Rusak
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    {{ perangkat[6] }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+                            {{ perangkat[7] or '-' }}
+                        </td>
+
+
+                        <td class="text-center">
+
+                            <div class="d-flex justify-content-center gap-1">
+
+                                <!-- EDIT -->
+
+                                <a
+                                    href="/perangkat/edit/{{ perangkat[0] }}"
+                                    class="btn btn-sm btn-warning"
+                                >
+                                    Edit
+                                </a>
+
+
+                                <!-- HAPUS -->
+
+                                <form
+                                    action="/perangkat/hapus/{{ perangkat[0] }}"
+                                    method="POST"
+                                    onsubmit="return confirm('Apakah kamu yakin ingin menghapus perangkat ini?');"
+                                    style="display: inline;"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-sm btn-danger"
+                                    >
+                                        Hapus
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    {% else %}
+
+                    <tr>
+
+                        <td
+                            colspan="9"
+                            class="text-center py-4"
+                        >
+
+                            <div class="text-muted">
+
+                                Belum ada data perangkat.
+
+                            </div>
+
+                            <a
+                                href="/perangkat/tambah"
+                                class="btn btn-primary mt-2"
+                            >
+                                + Tambah Perangkat
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

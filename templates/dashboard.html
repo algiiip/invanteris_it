@@ -1,0 +1,336 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard Inventaris IT
+{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="mb-1">
+            Dashboard
+        </h2>
+
+        <p class="text-muted mb-0">
+            Ringkasan inventaris perangkat IT
+        </p>
+    </div>
+
+</div>
+
+
+<!-- DATA PERANGKAT DI ATAS -->
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header">
+        <h5 class="mb-0">
+            Data Perangkat
+        </h5>
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-striped table-hover">
+
+                <thead>
+
+                    <tr>
+                        <th>No</th>
+                        <th>Kode Aset</th>
+                        <th>Nama Perangkat</th>
+                        <th>Kategori</th>
+                        <th>Lokasi</th>
+                        <th>Kondisi</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for perangkat in perangkat_terbaru %}
+
+                    <tr>
+
+                        <td>
+                            {{ loop.index }}
+                        </td>
+
+                        <td>
+                            {{ perangkat[1] }}
+                        </td>
+
+                        <td>
+                            {{ perangkat[2] }}
+                        </td>
+
+                        <td>
+                            {{ perangkat[3] }}
+                        </td>
+
+                        <td>
+                            {{ perangkat[5] }}
+                        </td>
+
+                        <td>
+
+                            {% if perangkat[6] == "Baik" %}
+
+                                <span class="badge bg-success">
+                                    Baik
+                                </span>
+
+                            {% elif perangkat[6] == "Dalam Perbaikan" %}
+
+                                <span class="badge bg-warning text-dark">
+                                    Dalam Perbaikan
+                                </span>
+
+                            {% elif perangkat[6] == "Rusak" %}
+
+                                <span class="badge bg-danger">
+                                    Rusak
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    {{ perangkat[6] }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="6" class="text-center">
+
+                            Belum ada data perangkat
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <a
+            href="/perangkat"
+            class="btn btn-primary"
+        >
+            Kelola Semua Perangkat
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- BAGIAN BAWAH: STATISTIK + GRAFIK -->
+
+<div class="row g-4">
+
+    <!-- STATISTIK -->
+
+    <div class="col-md-5">
+
+        <div class="row g-3">
+
+            <!-- TOTAL -->
+
+            <div class="col-md-6">
+
+                <div class="card stat-card shadow-sm">
+
+                    <div class="card-body">
+
+                        <h6 class="text-muted">
+                            Total Perangkat
+                        </h6>
+
+                        <h2>
+                            {{ total_perangkat }}
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BAIK -->
+
+            <div class="col-md-6">
+
+                <div class="card stat-card shadow-sm">
+
+                    <div class="card-body">
+
+                        <h6 class="text-muted">
+                            Kondisi Baik
+                        </h6>
+
+                        <h2 class="text-success">
+                            {{ perangkat_baik }}
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PERBAIKAN -->
+
+            <div class="col-md-6">
+
+                <div class="card stat-card shadow-sm">
+
+                    <div class="card-body">
+
+                        <h6 class="text-muted">
+                            Dalam Perbaikan
+                        </h6>
+
+                        <h2 class="text-warning">
+                            {{ perangkat_perbaikan }}
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RUSAK -->
+
+            <div class="col-md-6">
+
+                <div class="card stat-card shadow-sm">
+
+                    <div class="card-body">
+
+                        <h6 class="text-muted">
+                            Rusak
+                        </h6>
+
+                        <h2 class="text-danger">
+                            {{ perangkat_rusak }}
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- GRAFIK -->
+
+    <div class="col-md-7">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+                    Grafik Kondisi Perangkat
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="chart-container">
+
+                    <canvas id="kondisiChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    const ctx = document.getElementById("kondisiChart");
+
+    new Chart(ctx, {
+
+        type: "doughnut",
+
+        data: {
+
+            labels: [
+                "Baik",
+                "Dalam Perbaikan",
+                "Rusak"
+            ],
+
+            datasets: [{
+
+                data: [
+                    {{ perangkat_baik }},
+                    {{ perangkat_perbaikan }},
+                    {{ perangkat_rusak }}
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    position: "bottom"
+
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
+{% endblock %}
