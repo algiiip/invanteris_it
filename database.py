@@ -1,13 +1,12 @@
 import os
 import mysql.connector
-from config import MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE, MYSQL_PORT
 
 def get_connection():
     return mysql.connector.connect(
-        host=MYSQL_HOST,
-        user=MYSQL_USER,
-        password=MYSQL_PASSWORD,
-        database=MYSQL_DATABASE,
-        port=MYSQL_PORT,
-        ssl_verify_identity=True
+        host=os.getenv('MYSQL_HOST', 'gateway01.ap-southeast-1.prod.aws.tidbcloud.com'),
+        user=os.getenv('MYSQL_USER'),
+        password=os.getenv('MYSQL_PASSWORD'),
+        database=os.getenv('MYSQL_DATABASE', 'invanteris_it'),
+        port=int(os.getenv('MYSQL_PORT', 4000)),
+        ssl_disabled=False
     )
