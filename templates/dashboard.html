@@ -4,6 +4,30 @@
 Dashboard Inventaris IT
 {% endblock %}
 
+{% block head %}
+<style>
+    /* Scroll pada tabel dashboard */
+    .dashboard-table {
+        height: 250px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+
+    /* Header tabel tetap di atas saat scroll */
+    .dahsboard-table thead th {
+        position: sticky;
+        top: 0;
+        backgrounnd-color: #f8f9fa;
+        z-index: 2;
+    }
+
+    /* Supaya tabel tetap rapi */
+    .dashboard-table table {
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -33,7 +57,7 @@ Dashboard Inventaris IT
 
     <div class="card-body">
 
-        <div class="table-responsive">
+        <div class="table-responsive dashboard-table">
 
             <table class="table table-striped table-hover">
 
