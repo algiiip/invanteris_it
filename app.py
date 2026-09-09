@@ -104,7 +104,6 @@ def index():
             SELECT *
             FROM perangkat
             ORDER BY kode_aset ASC
-            LIMIT 5
         """)
 
         perangkat_terbaru = cursor.fetchall()
