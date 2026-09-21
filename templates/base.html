@@ -18,6 +18,11 @@
         rel="stylesheet"
     >
 
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+>
+
     <style>
 
         body {
@@ -56,7 +61,7 @@
 /* MENU */
 
 .sidebar-menu {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 
@@ -65,19 +70,35 @@
 .sidebar-menu a {
     color: #ffffff;
     text-decoration: none;
-    display: block;
-    padding: 12px 15px;
-    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 14px 16px;
+
+    border-radius: 15px;
+
     transition: all 0.2s ease;
-    font-size: 20 px;
+    
+    font-size: 17px;
     font-weight: 500;
 }
 
+/* ICON */
+
+.sidebar-menu a .menu-icon {
+    width: 30px;
+    display: inline-block;
+
+    font-size: 19px;
+    text-align: center;
+    margin-right: 10px;
+}
 
 /* HOVER */
 
 .sidebar-menu a:hover {
-    background-color: rgba(255, 255, 255, 0.18);
+    background-color: rgba(255, 255, 255, 0.08);
     color: #ffffff;
     transform: translateX(3px);
 }
@@ -86,25 +107,11 @@
 /* MENU AKTIF */
 
 .sidebar-menu a.active {
-    background-color: rgba(255, 255, 255, 0.25);
+    background-color: #031a4c;
     color: #ffffff;
     font-weight: 600;
+    box-shadow: 0 6px 15px rgba(37, 9, 235, 0.25);
 }
-
-
-/* ICON */
-
-.menu-icon {
-    width: 28px;
-    display: inline-block;
-    font-size: 16px;
-}
-
-        /* ICON */
-        .menu-icon {
-            width: 25px;
-            display: inline-block;
-        }
 
         /* CONTENT */
         .content {
@@ -172,7 +179,9 @@
 
             <div class="sidebar-menu">
 
-                <a href="/">
+                <a href="/"
+                    class="{% if request.path == '/' %}active{% endif %}"
+                >
                     <span class="menu-icon">🏠</span>
                     Dashboard
                 </a>
@@ -182,7 +191,9 @@
 
             <div class="sidebar-menu">
 
-                <a href="/perangkat">
+                <a href="/perangkat"
+                    class="{% if request.path == '/perangkat' %}active{% endif %}"
+                >
                     <span class="menu-icon">💻</span>
                     Data Perangkat
                 </a>
@@ -192,7 +203,9 @@
 
             <div class="sidebar-menu">
 
-                <a href="/perangkat/tambah">
+                <a href="/perangkat/tambah"
+                    class="{% if request.path == '/perangkat/tambah' %}active{% endif %}"
+                >
                     <span class="menu-icon">➕</span>
                     Tambah Perangkat
                 </a>
@@ -202,7 +215,9 @@
 
             <div class="sidebar-menu">
 
-                <a href="/perangkat/cetak">
+                <a href="/perangkat/cetak"
+                    class="{% if request.path == '/perangkat/cetak' %}active{% endif %}"
+                >
                     <span class="menu-icon">🖨️</span>
                     Cetak Laporan
                 </a>
@@ -212,7 +227,9 @@
 
             <div class="sidebar-menu">
 
-                <a href="/perangkat/export">
+                <a href="/perangkat/export"
+                    class="{% if request.path == '/perangkat/export' %}active{% endif %}"
+                >
                     <span class="menu-icon">📊</span>
                     Export Excel
                 </a>
