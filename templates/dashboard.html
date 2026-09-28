@@ -1,0 +1,750 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Dashboard Inventaris IT
+
+{% endblock %}
+
+
+{% block head %}
+
+<style>
+
+    /* =================================
+       DASHBOARD HEADER
+    ================================= */
+
+    .dashboard-header {
+        margin-bottom: 28px;
+    }
+
+
+    .dashboard-welcome {
+        display: flex;
+
+        align-items: center;
+
+        gap: 15px;
+    }
+
+
+    .dashboard-title-icon {
+        width: 50px;
+        height: 50px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 14px;
+
+        background: #e8f0ff;
+
+        color: #2563eb;
+
+        font-size: 23px;
+    }
+
+
+    /* =================================
+       DATA CARD
+    ================================= */
+
+    .data-card {
+        margin-bottom: 24px;
+    }
+
+
+    .data-card .card-body {
+        padding: 20px;
+    }
+
+
+    /* =================================
+       STATISTICS
+    ================================= */
+
+    .statistics-row {
+        margin-bottom: 24px;
+    }
+
+
+    .stat-card-body {
+        padding: 20px;
+    }
+
+
+    .stat-top {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        margin-bottom: 18px;
+    }
+
+
+    /* =================================
+       CHART CARD
+    ================================= */
+
+    .chart-card {
+        height: 100%;
+    }
+
+
+    .chart-card .card-body {
+        padding: 20px;
+    }
+
+
+    /* =================================
+       RESPONSIVE
+    ================================= */
+
+    @media (max-width: 768px) {
+
+        .dashboard-welcome {
+            align-items: flex-start;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<!-- ==========================================
+     HEADER
+=========================================== -->
+
+<div class="dashboard-header">
+
+    <div class="dashboard-welcome">
+
+        <div class="dashboard-title-icon">
+
+            <i class="bi bi-speedometer2"></i>
+
+        </div>
+
+
+        <div>
+
+            <h1 class="page-title">
+                Dashboard
+            </h1>
+
+            <p class="page-subtitle mb-0">
+                Ringkasan inventaris perangkat IT
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+     DATA PERANGKAT
+=========================================== -->
+
+<div class="card data-card">
+
+    <div class="card-header">
+
+        <div class="d-flex align-items-center">
+
+            <i
+                class="bi bi-pc-display-horizontal me-2"
+                style="color: #2563eb;"
+            ></i>
+
+            <h5 class="mb-0">
+                Data Perangkat
+            </h5>
+
+        </div>
+
+    </div>
+
+
+    <div class="card-body">
+
+
+        <!-- TABLE -->
+
+        <div class="table-responsive dashboard-table">
+
+            <table class="table table-hover">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            No
+                        </th>
+
+                        <th>
+                            Kode Aset
+                        </th>
+
+                        <th>
+                            Nama Perangkat
+                        </th>
+
+                        <th>
+                            Kategori
+                        </th>
+
+                        <th>
+                            Lokasi
+                        </th>
+
+                        <th>
+                            Kondisi
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for perangkat in perangkat_terbaru %}
+
+                    <tr>
+
+                        <td>
+                            {{ loop.index }}
+                        </td>
+
+
+                        <td>
+
+                            <strong>
+                                {{ perangkat[1] }}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+                            {{ perangkat[2] }}
+                        </td>
+
+
+                        <td>
+
+                            <span class="text-muted">
+                                {{ perangkat[3] }}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <i
+                                class="bi bi-geo-alt me-1"
+                                style="color: #64748b;"
+                            ></i>
+
+                            {{ perangkat[5] }}
+
+                        </td>
+
+
+                        <td>
+
+
+                            {% if perangkat[6] == "Baik" %}
+
+                            <span class="badge bg-success">
+
+                                <i class="bi bi-check-circle me-1"></i>
+
+                                Baik
+
+                            </span>
+
+
+                            {% elif perangkat[6] == "Dalam Perbaikan" %}
+
+                            <span class="badge bg-warning text-dark">
+
+                                <i class="bi bi-tools me-1"></i>
+
+                                Dalam Perbaikan
+
+                            </span>
+
+
+                            {% elif perangkat[6] == "Rusak" %}
+
+                            <span class="badge bg-danger">
+
+                                <i class="bi bi-x-circle me-1"></i>
+
+                                Rusak
+
+                            </span>
+
+
+                            {% else %}
+
+                            <span class="badge bg-secondary">
+
+                                {{ perangkat[6] }}
+
+                            </span>
+
+                            {% endif %}
+
+
+                        </td>
+
+                    </tr>
+
+
+                    {% else %}
+
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            class="text-center py-5"
+                        >
+
+                            <div class="text-muted">
+
+                                <i
+                                    class="bi bi-inbox"
+                                    style="font-size: 35px;"
+                                ></i>
+
+                                <div class="mt-2">
+
+                                    Belum ada data perangkat
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+
+        <!-- BUTTON -->
+
+        <div class="mt-3">
+
+            <a
+                href="/perangkat"
+                class="btn btn-primary"
+            >
+
+                <i class="bi bi-list-ul me-1"></i>
+
+                Kelola Semua Perangkat
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+     STATISTIK + GRAFIK
+=========================================== -->
+
+<div class="row g-4">
+
+
+    <!-- =====================================
+         STATISTIK
+    ====================================== -->
+
+    <div class="col-lg-5">
+
+
+        <div class="row g-3 statistics-row">
+
+
+            <!-- TOTAL -->
+
+            <div class="col-md-6">
+
+                <div class="card stat-card">
+
+                    <div class="stat-card-body">
+
+
+                        <div class="stat-top">
+
+                            <div>
+
+                                <div class="stat-label">
+                                    Total Perangkat
+                                </div>
+
+                                <div class="stat-number">
+
+                                    {{ total_perangkat }}
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="stat-icon stat-icon-blue">
+
+                                <i class="bi bi-hdd-stack"></i>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BAIK -->
+
+            <div class="col-md-6">
+
+                <div class="card stat-card">
+
+                    <div class="stat-card-body">
+
+
+                        <div class="stat-top">
+
+                            <div>
+
+                                <div class="stat-label">
+                                    Kondisi Baik
+                                </div>
+
+                                <div
+                                    class="stat-number text-success"
+                                >
+
+                                    {{ perangkat_baik }}
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="stat-icon stat-icon-green">
+
+                                <i class="bi bi-check-circle"></i>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PERBAIKAN -->
+
+            <div class="col-md-6">
+
+                <div class="card stat-card">
+
+                    <div class="stat-card-body">
+
+
+                        <div class="stat-top">
+
+                            <div>
+
+                                <div class="stat-label">
+                                    Dalam Perbaikan
+                                </div>
+
+                                <div
+                                    class="stat-number text-warning"
+                                >
+
+                                    {{ perangkat_perbaikan }}
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="stat-icon stat-icon-yellow">
+
+                                <i class="bi bi-tools"></i>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RUSAK -->
+
+            <div class="col-md-6">
+
+                <div class="card stat-card">
+
+                    <div class="stat-card-body">
+
+
+                        <div class="stat-top">
+
+                            <div>
+
+                                <div class="stat-label">
+                                    Rusak
+                                </div>
+
+                                <div
+                                    class="stat-number text-danger"
+                                >
+
+                                    {{ perangkat_rusak }}
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="stat-icon stat-icon-red">
+
+                                <i class="bi bi-exclamation-triangle"></i>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         GRAFIK
+    ====================================== -->
+
+    <div class="col-lg-7">
+
+        <div class="card chart-card">
+
+
+            <div class="card-header">
+
+                <div class="d-flex align-items-center">
+
+                    <i
+                        class="bi bi-pie-chart me-2"
+                        style="color: #2563eb;"
+                    ></i>
+
+                    <h5 class="mb-0">
+                        Grafik Kondisi Perangkat
+                    </h5>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-body">
+
+                <div class="chart-container">
+
+                    <canvas id="kondisiChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}
+
+
+
+{% block script %}
+
+
+<!-- Chart.js -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/chart.js"
+></script>
+
+
+<script>
+
+    const ctx =
+        document.getElementById("kondisiChart");
+
+
+    new Chart(ctx, {
+
+        type: "doughnut",
+
+
+        data: {
+
+            labels: [
+                "Baik",
+                "Dalam Perbaikan",
+                "Rusak"
+            ],
+
+
+            datasets: [
+
+                {
+
+                    data: [
+
+                        {{ perangkat_baik }},
+
+                        {{ perangkat_perbaikan }},
+
+                        {{ perangkat_rusak }}
+
+                    ],
+
+
+                    backgroundColor: [
+
+                        "#198754",
+                        "#f59e0b",
+                        "#dc3545"
+
+                    ],
+
+
+                    borderColor: "#ffffff",
+
+                    borderWidth: 4,
+
+
+                    hoverOffset: 8
+
+                }
+
+            ]
+
+        },
+
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+
+            cutout: "68%",
+
+
+            plugins: {
+
+                legend: {
+
+                    position: "bottom",
+
+                    labels: {
+
+                        padding: 20,
+
+                        usePointStyle: true,
+
+                        pointStyle: "circle",
+
+                        font: {
+
+                            size: 13
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,761 @@
+{% extends "base.html" %}
+
+{% block title %}
+Tambah Perangkat - Inventaris IT
+{% endblock %}
+
+
+{% block head %}
+
+<style>
+
+/* =========================
+        PAGE HEADER
+========================= */
+
+.page-header {
+    margin-bottom: 25px;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.page-header p {
+    margin: 5px 0 0;
+    font-size: 15px;
+    color: #64748b;
+}
+
+
+/* =========================
+        FORM CARD
+========================= */
+
+.form-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+}
+
+
+/* =========================
+        FORM HEADER
+========================= */
+
+.form-card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 22px 25px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #ffffff;
+}
+
+.form-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e8f1ff;
+    color: #2563eb;
+
+    border-radius: 12px;
+
+    font-size: 22px;
+}
+
+.form-card-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.form-card-header p {
+    margin: 3px 0 0;
+    font-size: 13px;
+    color: #64748b;
+}
+
+
+/* =========================
+        FORM BODY
+========================= */
+
+.form-card-body {
+    padding: 28px 25px;
+}
+
+
+/* =========================
+        SECTION TITLE
+========================= */
+
+.section-title {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    color: #1e293b;
+}
+
+.section-icon {
+    width: 32px;
+    height: 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 9px;
+
+    background: #eaf2ff;
+    color: #2563eb;
+
+    font-size: 16px;
+}
+
+
+/* =========================
+   LABEL
+========================= */
+
+.form-label {
+    margin-bottom: 7px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #374151;
+}
+
+.required {
+    color: #dc3545;
+    margin-left: 2px;
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+.custom-input {
+    height: 45px;
+
+    border: 1px solid #d9dee5;
+    border-radius: 8px;
+
+    font-size: 14px;
+    color: #343a40;
+
+    transition: all 0.2s ease;
+}
+
+.custom-input:hover {
+    border-color: #b8c2cc;
+}
+
+.custom-input:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+
+/* =========================
+        TEXTAREA
+========================= */
+
+.custom-textarea {
+    border: 1px solid #d9dee5;
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    resize: vertical;
+    min-height: 110px;
+
+    transition: all 0.2s ease;
+}
+
+.custom-textarea:hover {
+    border-color: #b8c2cc;
+}
+
+.custom-textarea:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+
+/* =========================
+        DIVIDER
+========================= */
+
+.form-divider {
+    margin: 28px 0;
+
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+
+    opacity: 1;
+}
+
+
+/* =========================
+        ACTION BUTTON
+========================= */
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 30px;
+    padding-top: 20px;
+
+    border-top: 1px solid #e2e8f0;
+}
+
+
+/* =========================
+        CANCEL BUTTON
+========================= */
+
+.btn-cancel {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 100px;
+
+    padding: 10px 16px;
+
+    background: #f1f5f9;
+    color: #475569;
+
+    text-decoration: none;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+        SAVE BUTTON
+========================= */
+
+.btn-save {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    border: none;
+
+    padding: 10px 18px;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: all 0.2s ease;
+}
+
+.btn-save:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 10px rgba(37, 99, 235, 0.20);
+}
+
+
+/* =========================
+        RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    .page-header h1 {
+        font-size: 27px;
+    }
+
+    .form-card-header {
+        padding: 18px;
+    }
+
+    .form-card-body {
+        padding: 20px 18px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .btn-cancel,
+    .btn-save {
+        width: 100%;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+
+<div class="page-header">
+
+    <div>
+
+        <h1>
+            Tambah Perangkat
+        </h1>
+
+        <p>
+            Tambahkan perangkat baru ke dalam inventaris IT
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+        FORM CARD
+========================= -->
+
+<div class="form-card">
+
+
+    <!-- =========================
+            FORM HEADER
+    ========================= -->
+
+    <div class="form-card-header">
+
+        <div class="form-icon">
+
+            <i class="bi bi-plus-lg"></i>
+
+        </div>
+
+        <div>
+
+            <h2>
+                Tambah Perangkat
+            </h2>
+
+            <p>
+                Isi data perangkat dengan lengkap
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+            FORM BODY
+    ========================= -->
+
+    <div class="form-card-body">
+
+        <form method="POST">
+
+
+            <!-- =========================
+                    INFORMASI PERANGKAT
+            ========================= -->
+
+            <div class="section-title">
+
+                <span class="section-icon">
+
+                    <i class="bi bi-pc-display"></i>
+
+                </span>
+
+                <span>
+                    Informasi Perangkat
+                </span>
+
+            </div>
+
+
+            <div class="row g-3">
+
+
+                <!-- KODE ASET -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+
+                        Kode Aset
+
+                        <span class="required">
+                            *
+                        </span>
+
+                    </label>
+
+                    <input
+                        type="text"
+                        name="kode_aset"
+                        class="form-control custom-input"
+                        placeholder="Contoh: IT-004"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- NAMA PERANGKAT -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+
+                        Nama Perangkat
+
+                        <span class="required">
+                            *
+                        </span>
+
+                    </label>
+
+                    <input
+                        type="text"
+                        name="nama_perangkat"
+                        class="form-control custom-input"
+                        placeholder="Contoh: Laptop Asus"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- KATEGORI -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+
+                        Kategori
+
+                        <span class="required">
+                            *
+                        </span>
+
+                    </label>
+
+                    <select
+                        name="kategori"
+                        class="form-select custom-input"
+                        required
+                    >
+
+                        <option value="">
+                            -- Pilih Kategori --
+                        </option>
+
+                        <option value="Laptop">
+                            Laptop
+                        </option>
+
+                        <option value="Komputer">
+                            Komputer
+                        </option>
+
+                        <option value="Printer">
+                            Printer
+                        </option>
+
+                        <option value="Monitor">
+                            Monitor
+                        </option>
+
+                        <option value="PC">
+                            PC
+                        </option>
+
+                        <option value="Router">
+                            Router
+                        </option>
+
+                        <option value="Switch">
+                            Switch
+                        </option>
+
+                        <option value="Lainnya">
+                            Lainnya
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- MEREK -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Merek
+                    </label>
+
+                    <input
+                        type="text"
+                        name="merek"
+                        class="form-control custom-input"
+                        placeholder="Contoh: Asus"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                        PEMBATAS
+            ========================= -->
+
+            <hr class="form-divider">
+
+
+            <!-- =========================
+                    LOKASI & KONDISI
+            ========================= -->
+
+            <div class="section-title">
+
+                <span class="section-icon">
+
+                    <i class="bi bi-geo-alt"></i>
+
+                </span>
+
+                <span>
+                    Lokasi & Kondisi
+                </span>
+
+            </div>
+
+
+            <div class="row g-3">
+
+
+                <!-- LOKASI -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Lokasi
+                    </label>
+
+                    <input
+                        type="text"
+                        name="lokasi"
+                        class="form-control custom-input"
+                        placeholder="Contoh: Ruang IT"
+                    >
+
+                </div>
+
+
+                <!-- KONDISI -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+
+                        Kondisi
+
+                        <span class="required">
+                            *
+                        </span>
+
+                    </label>
+
+                    <select
+                        name="kondisi"
+                        class="form-select custom-input"
+                        required
+                    >
+
+                        <option value="">
+                            -- Pilih Kondisi --
+                        </option>
+
+                        <option value="Baik">
+                            Baik
+                        </option>
+
+                        <option value="Dalam Perbaikan">
+                            Dalam Perbaikan
+                        </option>
+
+                        <option value="Rusak">
+                            Rusak
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- TANGGAL MASUK -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Tanggal Masuk
+                    </label>
+
+                    <input
+                        type="date"
+                        name="tanggal_masuk"
+                        class="form-control custom-input"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                    PEMBATAS
+            ========================= -->
+
+            <hr class="form-divider">
+
+
+            <!-- =========================
+                    KETERANGAN
+            ========================= -->
+
+            <div class="section-title">
+
+                <span class="section-icon">
+
+                    <i class="bi bi-pencil-square"></i>
+
+                </span>
+
+                <span>
+                    Keterangan
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <label class="form-label">
+                    Keterangan Perangkat
+                </label>
+
+                <textarea
+                    name="keterangan"
+                    class="form-control custom-textarea"
+                    rows="4"
+                    placeholder="Tambahkan keterangan perangkat jika diperlukan..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- =========================
+                        TOMBOL
+            ========================= -->
+
+            <div class="form-actions">
+
+
+                <!-- BATAL -->
+
+                <a
+                    href="/perangkat"
+                    class="btn-cancel"
+                >
+
+                    <i class="bi bi-arrow-left me-1"></i>
+
+                    Batal
+
+                </a>
+
+
+                <!-- SIMPAN -->
+
+                <button
+                    type="submit"
+                    class="btn-save"
+                >
+
+                    <i class="bi bi-check-lg"></i>
+
+                    Simpan Perangkat
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

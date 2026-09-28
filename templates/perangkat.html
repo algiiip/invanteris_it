@@ -1,0 +1,770 @@
+{% extends "base.html" %}
+
+{% block title %}
+Data Perangkat - Inventaris IT
+{% endblock %}
+
+{% block head %}
+<style>
+    .page-header {
+        margin-bottom: 25px;
+    }
+
+    .page-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 5px;
+    }
+
+    .page.subtitle {
+        color: #64748b;
+        margin: 0;
+        font-size: 15px;
+    }
+
+    .header-action {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .btn-modern {
+        border: none;
+        border-radius: 12px;
+        padding: 11px 18px;
+        font-weight: 600;
+        transition: all .2s ease;
+    }
+
+    .btn-modern:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-primary-modern {
+        background: #2563eb;
+        color: white;
+    }
+
+    .btn-primary-modern:hover {
+        background: #1d4ed8;
+        color: white;
+    }
+
+    .btn-success-modern {
+        background: #198754;
+        color: white;
+    }
+
+    .btn-success-modern:hover {
+        background: #157347;
+        color: white;
+    }
+
+    .filter-card,
+    .table-card {
+        background: #ffffff;
+        border: none;
+        border-radius: 18px;
+        box-shadow: 0 5px 20px rgba(15, 23, 42, .07);
+    }
+
+    .filter-card {
+        padding: 22px;
+        margin-bottom: 25px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #334155;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .form-control,
+    .form-select {
+        border: 1px solid #dbe2ea;
+        border-radius: 11px;
+        padding: 11px 14px;
+        color: #334155;
+    }
+
+    .form-control:focus,
+    .form-selectLfocus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .12);
+    }
+
+    .btn-search {
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 11px;
+        padding: 11px 20px;
+        font-weight: 600;
+        width: 100%;
+    }
+
+    .btn-search:hover {
+        background: #1d4ed8;
+        color: white;
+    }
+
+    .btn-reset {
+        background: #64748b;
+        color: white;
+        border: none;
+        border-radius: 11px;
+        padding: 11px 20px;
+        font-weight: 600;
+        width: 100%;
+    }
+
+    .btn-reset:hover {
+        background: #475569;
+        color: white;
+    }
+
+    .table-card {
+        overflow: hidden;
+    }
+
+    .table-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .table-title {
+        font-size: 18px;
+        font-weight: 700;
+        columns: #0f172a;
+        margin: 0;
+    }
+
+    .table-subtitle {
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .table-wrapper {
+        padding: 0 15px 15px;
+        max-height: 520px;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+
+    .modern-tabel thead th {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: #f8fafc;
+    }
+    
+    .modern-table {
+        margin-bottom: 0;
+        min-width: 1000px;
+    }
+
+    .modern-tabel thead th {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+
+        background: #f8fafc !important;
+
+        color: #475569;
+        border-bottom: 2px solid #e2e8f0;
+
+        padding: 15px 12px;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .modern-table tbody td {
+        padding: 15px 12px;
+        color: #334155;
+        border-bottom: 1px solid #eef2f7;
+        vertical-align: middle;
+        font-size: 14px;
+    }
+    
+    .modern-table tbody tr {
+        transition: background .2s ease;
+    }
+
+    .modern-table tbody tr:hover {
+        background: #f8fbff;
+    }
+
+    .asset-code {
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .device-name {
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .location {
+        color: #64748b;
+    }
+
+    .location i {
+        color: #2563eb;
+        margin-right: 5px;
+    }
+
+    .badge-condition {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .badge-baik {
+        background: #dcfce7;
+        color: #15803d;
+    }
+
+    .badge-perbaikan {
+        background: #fef3c7;
+        color: #b45309;
+    }
+
+    .badge-rusak {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .badge-default {
+        background: #e2e8f0;
+        color: #475569;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 7px;
+    }
+
+    .btn-action {
+        border: none;
+        border-radius: 9px;
+        padding: 8px 12px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all .2s ease;
+    }
+
+    .btn-edit {
+        background: #fbbf24;
+        color: #422006;
+    }
+
+    .btn-delete {
+        background: #ef4444;
+        color: white;
+    }
+
+    .btn-action:hover {
+        transform: translateY(-2px);
+    }
+
+    .empty-state {
+        text-align: 45px;
+        color: #cbd5e1;
+        margin-bottom: 12px;
+    }
+
+    @media (max-width: 768px) {
+        .page.title {
+            font-size: 25px;
+        }
+
+        .header-action {
+            margin-top: 15px;
+        }
+
+        .table-header {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 5px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="d-flex justify-content-between align-items-start flex-wrap">
+
+        <div >
+            <h1 class="page-title">
+                Data Perangkat
+            </h1>
+
+            <p class="page-subtitle">
+                Daftar Seluruh Perangkat IT
+            </p>
+        </div>
+
+        <div class="header-action">
+            <a href="/perangkat/tambah"
+                class="btn btn-modern btn-success-modern">
+                <i class="bi bi-plus-lg me-1"></i>
+                Tambah Perangkat
+            </a>
+
+            <a href="/perangkat/cetak"
+                class="btn btn-modern btn-success-modern">
+                <i class="bi bi-printer me-1"></i>
+                cetak
+            </a>
+
+            <a href="/perangkat/export"
+                class="btn btn-modern btn-success-modern">
+                <i class="bi bi-file-earmark-excel me-1"></i>
+                Excel
+            </a>
+        </div>
+    </div>
+</div>
+
+<!--FILTER-->
+<div class="filter-card">
+    <form method="GET" action="/perangkat">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label">
+                    <i class="bi bi-search me-1"></i>
+                    Cari Perangkat
+                </label>
+
+                <input
+                    type="text"
+                    name="q"
+                    class="form-control"
+                    placeholder="Kode, nama, merek, atau lokasi"
+                    value="{{ request.args.get('q', '') }}"
+                >
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">
+                    <i class="bi bi-funnel me-1"></i>
+                    Kondisi
+                </label>
+
+                <select name="kondisi" class="form-select">
+                    <option value="">
+                        Semua Kondisi
+                    </option>
+
+                    <option value="Baik"
+                        {% if request.args.get('kondisi') == 'Baik' %}
+                            selected
+                        {% endif %}>
+                        Baik
+                    </option>
+
+                    <option value="Dalam Perbaikan"
+                        {% if request.args.get('kondisi') == 'Dalam Perbaikan' %}
+                            selected
+                        {% endif %}>
+                        Dalam Perbaikan
+                    </option>
+
+                    <option value="Rusak"
+                        {% if request.args.get('kondisi') == 'Rusak' %}
+                            selected
+                        {% endif %}>
+                        Rusak
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <a href="/perangkat"
+                    class="btn btn-reset">
+                    <i class="bi bi-arrow-clockwise me-1"></i>
+                    Reset
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--TABLE-->
+<div class="table-card">
+    <div class="table-header">
+        <div>
+            <h5 class="table-title">
+                <i class="bi bi-laptop me-2 text-primary"></i>
+                Daftar Perangkat
+            </h5>
+
+            <span class="table-subtitle">
+                Data Inventaris IT
+            </span>
+        </div>
+
+        <span class="badge bg-primary rounded-pill px-3 py-2">
+            {{ perangkat|length }} Perangkat
+        </span>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="table modern-table">
+            <thead>
+                <tr>
+                    <th width="50">No</th>
+                    <th>Kode Aset</th>
+                    <th>Nama Perangkat</th>
+                    <th>Kategori</th>
+                    <th>Merek</th>
+                    <th>Lokasi</th>
+                    <th>Kondisi</th>
+                    <th>Tanggal Masuk</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in perangkat_list %}
+
+                <tr>
+                    <td>
+                        {{ loop.index }}
+                    </td>
+
+                    <td>
+                        <span class="asset-code">
+                            {{ item[1] }}
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="device-name">
+                            {{ item[2] }}
+                        </span>
+                    </td>
+
+                    <td>
+                        {{ item[3] }}
+                    </td>
+
+                    <td>
+                        {{ item[4] }}
+                    </td>
+
+                    <td>
+                        <span class="location">
+                            <i class="bi bi-geo-alt"></i>
+                            {{ item[5] }}
+                        </span>
+                    </td>
+
+                    <td>
+                        {% if item[6] == 'Baik' %}
+
+                            <span class="badge-condition badge-baik">
+                                <i class="bi bi-check -circle-fill"></i>
+                                Baik
+                            </span>
+
+                        {% elif item[6] == 'Dalam Perbaikan' %}
+
+                            <span class="badge-condition badge-perbaikan">
+                                <i class="bi bi-tools"></i>
+                                Dalam Perbaikan
+                            </span>
+
+                        {% elif item[6] == 'Rusak' %}
+
+                            <span class="badge-condition badge-rusak">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                Rusak
+                            </span>
+
+                        {% else %}
+                            
+                            <span class="badge-condition badge-default">
+                                {{ item[6] }}
+                            </span>
+
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {{ item[7] }}
+                    </td>
+
+                    <td>
+                        <div class="action-buttons">
+                            <a href="/perangkat/edit/{{ item[0] }}"
+                                class="btn-action btn-edit">
+                                <i class="bi bi-pencil-sequare"></i>
+                                Edit
+                            </a>
+
+                            <button
+                                type="button"
+                                class="btn-action btn-delete"
+                                onclick="bukaModalHapus('{{ item[0] }}', '{{ item[2] | e }}')">
+                                <i class="bi bi-trash3"></i>
+                                Hapus
+                            </button>    
+                        </div>
+                    </td>
+                </tr>
+
+                {% else %}
+                <tr>
+                    <td colspan="3">
+                        <div class="empty-state">
+                            <i class="bi bi-inbox d-block"></i>
+                            <h5>
+                                Tidak ada data perangkat
+                            </h5>
+
+                            <p class="mb-0">
+                                Belum ada perangkat yang sesuai dengan pencarian.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MODAL KONFIRMASI HAPUS -->
+<div class="delete-modal-overlay" id="deleteModal" aria-hidden="true">
+    <div class="delete-modal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+
+        <div class="delete-modal-icon">
+            <i class="bi bi-trash3"></i>
+        </div>
+
+        <h4 id="deleteModalTitle">Hapus Perangkat?</h4>
+
+        <p class="delete-modal-text">
+            Apakah Anda yakin ingin menghapus perangkat ini?
+        </p>
+
+        <div class="delete-device-name" id="namaPerangkatHapus">
+            -
+        </div>
+
+        <div class="delete-warning">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <span>Data yang dihapus tidak dapat dikembalikan.</span>
+        </div>
+
+        <div class="delete-modal-actions">
+            <button type="button" class="btn-cancel-delete" onclick="tutupModalHapus()">
+                Batal
+            </button>
+
+            <form id="formHapus" method="POST">
+                <button type="submit" class="btn-confirm-delete">
+                    <i class="bi bi-trash3 me-1"></i>
+                    Hapus
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    /* MODAL HAPUS */
+    .delete-modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(15, 23, 42, 0.55);
+        backdrop-filter: blur(4px);
+    }
+
+    .delete-modal-overlay.show {
+        display: flex;
+    }
+
+    .delete-modal {
+        width: min(430px, 100%);
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.25);
+        animation: deleteModalIn .18s ease-out;
+    }
+
+    @keyframes deleteModalIn {
+        from {
+            opacity: 0;
+            transform: translateY(12px) scale(.97);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .delete-modal-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #fee2e2;
+        color: #dc2626;
+        font-size: 26px;
+    }
+
+    .delete-modal h4 {
+        margin: 0;
+        color: #0f172a;
+        font-size: 21px;
+        font-weight: 700;
+    }
+
+    .delete-modal-text {
+        margin: 10px 0 8px;
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .delete-device-name {
+        margin: 0 auto 18px;
+        padding: 10px 14px;
+        width: fit-content;
+        max-width: 100%;
+        border-radius: 9px;
+        background: #f8fafc;
+        color: #1e293b;
+        font-weight: 700;
+        font-size: 14px;
+        word-break: break-word;
+    }
+
+    .delete-warning {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 13px;
+        margin-bottom: 22px;
+        border-radius: 10px;
+        background: #fff7ed;
+        color: #9a3412;
+        font-size: 12px;
+        text-align: left;
+    }
+
+    .delete-warning i {
+        flex-shrink: 0;
+    }
+
+    .delete-modal-actions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .delete-modal-actions form {
+        margin: 0;
+    }
+
+    .btn-cancel-delete,
+    .btn-confirm-delete {
+        min-width: 105px;
+        border: 0;
+        border-radius: 9px;
+        padding: 10px 17px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+    .btn-cancel-delete {
+        background: #e2e8f0;
+        color: #334155;
+    }
+
+    .btn-cancel-delete:hover {
+        background: #cbd5e1;
+    }
+
+    .btn-confirm-delete {
+        background: #dc2626;
+        color: #ffffff;
+    }
+
+    .btn-confirm-delete:hover {
+        background: #b91c1c;
+        transform: translateY(-1px);
+        box-shadow: 0 5px 12px rgba(220, 38, 38, .22);
+    }
+
+    body.delete-modal-open {
+        overflow: hidden;
+    }
+</style>
+
+<script>
+    function bukaModalHapus(id, nama) {
+        const modal = document.getElementById("deleteModal");
+        const namaPerangkat = document.getElementById("namaPerangkatHapus");
+        const form = document.getElementById("formHapus");
+
+        namaPerangkat.textContent = nama;
+        form.action = "/perangkat/hapus/" + id;
+
+        modal.classList.add("show");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("delete-modal-open");
+    }
+
+    function tutupModalHapus() {
+        const modal = document.getElementById("deleteModal");
+
+        modal.classList.remove("show");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("delete-modal-open");
+    }
+
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Escape") {
+            tutupModalHapus();
+        }
+    });
+
+    document.getElementById("deleteModal").addEventListener("click", function(event) {
+        if (event.target === this) {
+            tutupModalHapus();
+        }
+    });
+</script>
+
+{% endblock %}
